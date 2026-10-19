@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../../domain/entity/news_article_entity.dart';
+import '../../domain/entities/news_article_entity.dart';
+import '../widgets/news_image.dart';
 
 class NewsDetailsPage extends StatefulWidget {
   final NewsArticleEntity article;
@@ -16,6 +17,10 @@ class _NewsDetailsPageState extends State<NewsDetailsPage> {
   @override
   Widget build(BuildContext context) {
     final a = widget.article;
+    final description =
+        a.description.isEmpty ? 'Описание отсутствует' : a.description;
+    final showContent = a.content.isNotEmpty && !description.startsWith(a.content);
+
     return Scaffold(
       backgroundColor: const Color(0xFFE9E9E9),
       body: SafeArea(
@@ -33,10 +38,11 @@ class _NewsDetailsPageState extends State<NewsDetailsPage> {
                   child: SingleChildScrollView(
                     padding: const EdgeInsets.fromLTRB(24, 32, 24, 16),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          height: 260,
-                          width: 180,
+                          height: 220,
+                          width: double.infinity,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
                             boxShadow: [
@@ -49,50 +55,58 @@ class _NewsDetailsPageState extends State<NewsDetailsPage> {
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(8),
-                            child: Image.asset(a.imagePath, fit: BoxFit.cover),
+                            child: NewsImage(url: a.imageUrl),
                           ),
                         ),
                         const SizedBox(height: 24),
-                        Text(
-                          a.title,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                              fontSize: 22, fontWeight: FontWeight.w800),
+                        Center(
+                          child: Text(
+                            a.title,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.w800),
+                          ),
                         ),
                         const SizedBox(height: 6),
-                        Text(
-                          a.author,
-                          style: TextStyle(
-                              fontSize: 15, color: Colors.grey.shade700),
+                        Center(
+                          child: Text(
+                            a.author,
+                            style: TextStyle(
+                                fontSize: 15, color: Colors.grey.shade700),
+                          ),
                         ),
                         const SizedBox(height: 20),
                         const Divider(),
                         const SizedBox(height: 12),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _Info(label: 'Автор', value: a.author),
-                            _Info(
-                                label: 'Дата',
-                                value: DateFormat('d MMM').format(a.date)),
-                            _Info(
-                                label: 'Год',
-                                value: DateFormat('yyyy').format(a.date)),
+                            Expanded(
+                                flex: 2,
+                                child: _Info(
+                                    label: 'Источник', value: a.sourceName)),
+                            Expanded(
+                                child: _Info(
+                                    label: 'Дата',
+                                    value: DateFormat('d MMM yyyy')
+                                        .format(a.publishedAt))),
+                            Expanded(
+                                child: _Info(
+                                    label: 'Время',
+                                    value: DateFormat('HH:mm')
+                                        .format(a.publishedAt))),
                           ],
                         ),
                         const SizedBox(height: 20),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text('Описание',
-                              style: TextStyle(
-                                  fontSize: 11, color: Colors.grey.shade500)),
-                        ),
+                        Text('Описание',
+                            style: TextStyle(
+                                fontSize: 11, color: Colors.grey.shade500)),
                         const SizedBox(height: 8),
                         GestureDetector(
                           onTap: () => setState(() => _expanded = !_expanded),
                           child: Text.rich(
                             TextSpan(children: [
-                              TextSpan(text: a.description),
+                              TextSpan(text: description),
                               TextSpan(
                                 text: _expanded ? '  СКРЫТЬ' : '  ЕЩЁ',
                                 style: const TextStyle(
@@ -109,6 +123,20 @@ class _NewsDetailsPageState extends State<NewsDetailsPage> {
                                 color: Colors.grey.shade800),
                           ),
                         ),
+                        if (showContent) ...[
+                          const SizedBox(height: 20),
+                          Text('Содержание',
+                              style: TextStyle(
+                                  fontSize: 11, color: Colors.grey.shade500)),
+                          const SizedBox(height: 8),
+                          Text(
+                            a.content,
+                            style: TextStyle(
+                                fontSize: 14,
+                                height: 1.5,
+                                color: Colors.grey.shade800),
+                          ),
+                        ],
                       ],
                     ),
                   ),
@@ -146,7 +174,9 @@ class _Info extends StatelessWidget {
             style: TextStyle(fontSize: 11, color: Colors.grey.shade500)),
         const SizedBox(height: 4),
         Text(value,
-            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700)),
       ],
     );
   }

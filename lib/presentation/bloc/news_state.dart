@@ -8,7 +8,8 @@ class NewsLoading extends NewsState {}
 
 class NewsSuccess extends NewsState {
   final List<NewsArticleEntity> articles;
-  NewsSuccess(this.articles);
+  final String query;
+  NewsSuccess(this.articles, this.query);
 }
 
 class NewsFailure extends NewsState {

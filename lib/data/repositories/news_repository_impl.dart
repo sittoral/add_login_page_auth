@@ -1,0 +1,12 @@
+import '../../domain/entities/news_article_entity.dart';
+import '../../domain/repositories/news_repository.dart';
+import '../datasources/news_remote_data_source.dart';
+
+class NewsRepositoryImpl implements NewsRepository {
+  final NewsRemoteDataSource _remote;
+  NewsRepositoryImpl(this._remote);
+
+  @override
+  Future<List<NewsArticleEntity>> searchNews(String query) =>
+      _remote.searchNews(query);
+}

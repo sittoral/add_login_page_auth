@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../../../domain/entity/news_article_entity.dart';
+import '../../domain/entities/news_article_entity.dart';
+import 'news_image.dart';
 
 class ArticleTile extends StatelessWidget {
   final NewsArticleEntity article;
@@ -31,7 +32,7 @@ class ArticleTile extends StatelessWidget {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
-                child: Image.asset(article.imagePath, fit: BoxFit.cover),
+                child: NewsImage(url: article.imageUrl),
               ),
             ),
           ),
@@ -51,7 +52,7 @@ class ArticleTile extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            '${article.author} • ${DateFormat('d MMM yyyy').format(article.date)}',
+            '${article.author} • ${DateFormat('d MMM yyyy').format(article.publishedAt)}',
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(fontSize: 10, color: Colors.grey.shade500),
