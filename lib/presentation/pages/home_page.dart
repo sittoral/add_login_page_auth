@@ -98,7 +98,7 @@ class _HomePageState extends State<HomePage> {
                             ? Center(
                                 child: Text('Ничего не найдено по «$query»'))
                             : GridView.builder(
-                                padding: const EdgeInsets.only(bottom: 24),
+                                padding: const EdgeInsets.only(bottom: 110),
                                 itemCount: articles.length,
                                 gridDelegate:
                                     const SliverGridDelegateWithFixedCrossAxisCount(
