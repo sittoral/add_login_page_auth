@@ -6,3 +6,5 @@ class NewsSearched extends NewsEvent {
   final String query;
   NewsSearched(this.query);
 }
+
+class NewsLoadMore extends NewsEvent {}

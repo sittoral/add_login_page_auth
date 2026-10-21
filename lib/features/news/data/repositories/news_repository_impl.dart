@@ -9,6 +9,6 @@ class NewsRepositoryImpl implements NewsRepository {
   NewsRepositoryImpl(this._remote);
 
   @override
-  Future<List<NewsArticleEntity>> searchNews(String query) =>
-      _remote.searchNews(query);
+  Future<List<NewsArticleEntity>> searchNews(String query, {int page = 1}) =>
+      _remote.searchNews(query, page: page);
 }
