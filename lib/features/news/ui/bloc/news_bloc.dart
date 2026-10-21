@@ -1,3 +1,4 @@
+import 'package:injectable/injectable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../domain/entities/news_article_entity.dart';
 import '../../domain/usecases/search_news_usecase.dart';
@@ -5,6 +6,7 @@ import '../../domain/usecases/search_news_usecase.dart';
 part 'news_event.dart';
 part 'news_state.dart';
 
+@injectable
 class NewsBloc extends Bloc<NewsEvent, NewsState> {
   final SearchNewsUseCase _searchNews;
 

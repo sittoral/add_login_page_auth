@@ -1,8 +1,10 @@
+import 'package:injectable/injectable.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../api_config.dart';
 import '../models/article_model.dart';
 
+@lazySingleton
 class NewsRemoteDataSource {
   static const _baseUrl = 'https://newsapi.org/v2/everything';
 

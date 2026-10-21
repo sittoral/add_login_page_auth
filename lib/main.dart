@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'di/service_locator.dart';
-import 'presentation/bloc/news_bloc.dart';
-import 'presentation/pages/main_page.dart';
+import 'core/di/service_locator.dart';
+import 'features/auth/ui/pages/splash_page.dart';
+import 'features/news/ui/bloc/news_bloc.dart';
 
 void main() {
-  initServiceLocator();
+  WidgetsFlutterBinding.ensureInitialized();
+  configureDependencies();
   runApp(const MyApp());
 }
 
@@ -18,13 +19,13 @@ class MyApp extends StatelessWidget {
       create: (_) => sl<NewsBloc>(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'News',
+        title: 'News App',
         theme: ThemeData(
           useMaterial3: true,
           scaffoldBackgroundColor: Colors.white,
           colorSchemeSeed: Colors.deepPurple,
         ),
-        home: const MainPage(),
+        home: const SplashPage(),
       ),
     );
   }
